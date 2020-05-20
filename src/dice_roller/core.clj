@@ -1,5 +1,7 @@
 (ns dice-roller.core)
 
+(use '[clojure.string :only (join)])
+
 (defn foo
   "I don't do a whole lot."
   [x]
@@ -8,12 +10,12 @@
 (defn -main
   "I don't do a whole lot...yet."
   [& args]
-  (println "Hello, World!"))
+  (user-input {}))
 
 (defn roll-dice
   "Rolls x dice with number of sides y."
   [x y]
-  (repeatedly x #(rand-int y)))
+  (map inc (repeatedly x #(rand-int y))))
 
 (defn add-conditional-value
   "Adds a new dice value x, with an effect y, as a hashmap to a list of other hashmaps z"
@@ -46,10 +48,12 @@
               (println "And how many?")
               (let [num (Integer/parseInt (read-line))]
                 (let [rolls (roll-dice num die)]
-                  (println (str "You have rolled: " (apply str rolls)))
-                  (println "The effects triggered are:")
-                  (apply println (effects-activated effects-map rolls))
-                  (user-input effects-map)
+                  (println (str "You have rolled: " (join ", " rolls)))
+                  (if (empty? (effects-activated effects-map rolls))
+                    (do
+                      (println "The effects triggered are:")
+                      (apply println (effects-activated effects-map rolls))
+                      (user-input effects-map)))
                 ))))
         (println "Thank you and goodbye.")
         )))
