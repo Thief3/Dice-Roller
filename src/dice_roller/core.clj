@@ -23,4 +23,6 @@
 (defn effects-activated
   "Checks a list of hashmaps x for values in list y, displaying any other values in their list"
   [x y]
-  (println "no"))
+  (flatten
+   (vals
+    (select-keys x y))))
