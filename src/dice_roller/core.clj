@@ -30,17 +30,26 @@
 (defn user-input
   "The main loop for the app."
   [effects-map]
-  (println effects-map)
   (println "Press 1 to add an effect and 2 to roll a new set of dice.")
   (let [choice (str (read-line))]
-    (if (= choice "1")
-      (do
-        (println "Which dice value triggers the effect?")
-        (let [val (Integer/parseInt (read-line))]
-          (println "And whats the effect?")
-          (let [effect (str (read-line))]
-            (println "Thanks for that. We've updated your effects list.")
-            (user-input (add-conditional-value val effect effects-map))))
-        )
-      (println "Coming soon")
-      )))
+    (case choice
+        "1" (do
+            (println "Which dice value triggers the effect?")
+            (let [val (Integer/parseInt (read-line))]
+              (println "And whats the effect?")
+              (let [effect (str (read-line))]
+                (println "Thanks for that. We've updated your effects list.")
+                (user-input (add-conditional-value val effect effects-map)))))
+        "2" (do
+            (println "What dice do you want to roll?")
+            (let [die (Integer/parseInt (read-line))]
+              (println "And how many?")
+              (let [num (Integer/parseInt (read-line))]
+                (let [rolls (roll-dice num die)]
+                  (println (str "You have rolled: " (apply str rolls)))
+                  (println "The effects triggered are:")
+                  (apply println (effects-activated effects-map rolls))
+                  (user-input effects-map)
+                ))))
+        (println "Thank you and goodbye.")
+        )))
