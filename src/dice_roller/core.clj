@@ -26,3 +26,21 @@
   (flatten
    (vals
     (select-keys x y))))
+
+(defn user-input
+  "The main loop for the app."
+  [effects-map]
+  (println effects-map)
+  (println "Press 1 to add an effect and 2 to roll a new set of dice.")
+  (let [choice (str (read-line))]
+    (if (= choice "1")
+      (do
+        (println "Which dice value triggers the effect?")
+        (let [val (Integer/parseInt (read-line))]
+          (println "And whats the effect?")
+          (let [effect (str (read-line))]
+            (println "Thanks for that. We've updated your effects list.")
+            (user-input (add-conditional-value val effect effects-map))))
+        )
+      (println "Coming soon")
+      )))
