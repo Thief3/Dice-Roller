@@ -1,16 +1,7 @@
-(ns dice-roller.core)
+(ns dice-roller.core
+  (:gen-class :main true))
 
 (use '[clojure.string :only (join)])
-
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
-
-(defn -main
-  "I don't do a whole lot...yet."
-  [& args]
-  (user-input {}))
 
 (defn roll-dice
   "Rolls x dice with number of sides y."
@@ -50,10 +41,20 @@
                 (let [rolls (roll-dice num die)]
                   (println (str "You have rolled: " (join ", " rolls)))
                   (if (empty? (effects-activated effects-map rolls))
+                    ; Is empty
+                    (do
+                      (println "No effects were triggered.")
+                      (user-input effects-map))
+                    ; Has elements
                     (do
                       (println "The effects triggered are:")
                       (apply println (effects-activated effects-map rolls))
-                      (user-input effects-map)))
-                ))))
+                      (user-input effects-map)))))))
         (println "Thank you and goodbye.")
         )))
+
+
+(defn -main
+  "I don't do a whole lot...yet."
+  [& args]
+  (user-input {}))
