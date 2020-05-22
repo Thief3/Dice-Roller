@@ -29,8 +29,11 @@
    (vals
     (select-keys x y))))
 <<<<<<< HEAD:src/cljs/dice_roller/old_core.cljs
+<<<<<<< HEAD:src/cljs/dice_roller/old_core.cljs
 
 
+=======
+>>>>>>> parent of bceb109... Changed so we can remove individual effects.:src/dice_roller/core.clj
 =======
 >>>>>>> parent of bceb109... Changed so we can remove individual effects.:src/dice_roller/core.clj
 
