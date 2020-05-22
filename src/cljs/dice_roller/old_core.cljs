@@ -1,7 +1,16 @@
 (ns dice-roller.core
-  (:gen-class :main true))
+  ;(:gen-class :main true)
+  (:require
+   [reagent.core :as reagent]
+   [re-frame.db :as db]
+   [re-frame.core :as rf]))
 
 (use '[clojure.string :only (join)])
+
+(rf/reg-event-db
+ :initialize
+ (fn [_ _]
+   {:effects {}})) 
 
 (defn roll-dice
   "Rolls x dice with number of sides y."
@@ -20,6 +29,8 @@
    (map
     #(vals %) (vals
                (get-in x y)))))
+
+
 
 (defn user-input
   "The main loop for the app."
