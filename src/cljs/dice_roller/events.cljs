@@ -19,3 +19,30 @@
  :add-effect
  (fn [db [die effect]]
    (add-conditional-value die effect db)))
+
+;(rf/reg-event-db
+; :delete-effect
+; (fn [db [_ die item-id]]
+  ;{:keys [db]} [die item-id]    ;; <--- new: obtain db and item-id directly
+;   (update-in db [die] dissoc [:effects item-id])))
+
+(rf/reg-event-db
+ :change-effect
+ (fn [db [_ die effect]]
+   (update-in db [die] assoc [:effects effect])))
+
+;(def effect-interceptors [;check-spec-interceptor    ;; ensure the spec is still valid  (after)
+;                        (path :todos)             ;; the 1st param given to handler will be the value from this path within db
+;                        ->local-store])
+(rf/reg-event-db
+  :delete-effect
+  (fn [effects [_ die id]]
+    (update-in
+     db
+     [:effects]
+     dissoc (update-in
+             (get db :effects)
+             [die]
+             dissoc id))))
+
+;(update-in db [:effects] dissoc (update-in (get db :effects) [die] dissoc :key))

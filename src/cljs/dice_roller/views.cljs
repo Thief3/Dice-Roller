@@ -3,7 +3,14 @@
    [re-frame.core :as re-frame]
    [dice-roller.subs :as subs]
    ))
-      
+
+(defn delete-button 
+  [die item-id]
+  [:button
+   {:on-click #(re-frame/dispatch [:delete-effect die item-id])}
+   die " " item-id])
+                                        ;#(re-frame.core/dispatch [:delete-effect die item-id])}])
+
 (defn effect-breakdown [effect-list]
   (for [[die vals] effect-list]
     (for [[key effect] vals]
@@ -11,6 +18,7 @@
 
 (defn effects []
   (let [effects (re-frame/subscribe [::subs/effects])]
+    ;;[:p @db]
     [:ul
      (for [effect-list (effect-breakdown @effects)]
        (for [e effect-list]
@@ -19,7 +27,8 @@
           (str
            "Key: " (get e :key) ", "
            "Die: " (get e :die) ", "
-           "Effect: " (get e :effect))]))]))
+           "Effect: " (get e :effect))
+          (delete-button (get e :die) (get e :key))]))]))
 
 (defn main-panel [effect-id]
   (let [ name (re-frame/subscribe [::subs/name])]
