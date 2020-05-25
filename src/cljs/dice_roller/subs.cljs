@@ -11,3 +11,8 @@
  ::effects
  (fn [db]
    (:effects db)))
+
+(reg-sub
+ ::activated-effects
+ (fn [db]
+   (:activated-effects db)))

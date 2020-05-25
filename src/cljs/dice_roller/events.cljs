@@ -35,3 +35,8 @@
      [:effects die]
      dissoc
      (str id))))
+
+(rf/reg-event-db
+ :get-activated-effects
+ (fn [db [_ dice-rolled]]
+   (assoc-in db [:activated-effects] (select-keys (get db :effects) (vec dice-rolled)))))

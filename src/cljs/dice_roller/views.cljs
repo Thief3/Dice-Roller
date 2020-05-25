@@ -56,7 +56,7 @@
   (map inc (repeatedly x #(rand-int y))))
 
 (defn dice-roll []
-  (let [die (reagent/atom 6) num-of-rolls (reagent/atom 1) dice-rolled (reagent/atom ())]
+  (let [die (reagent/atom 6) num-of-rolls (reagent/atom 1) dice-rolled (reagent/atom ()) activated-effects (re-frame/subscribe [::subs/activated-effects])]
     (fn [_]
       [:div
        [:label "Die: "]
@@ -69,9 +69,19 @@
             (reset! dice-rolled
                    (roll-dice (js/parseInt @num-of-rolls)
                               (js/parseInt @die)))
-            (js/console.log @dice-rolled))}
+            (re-frame/dispatch [:get-activated-effects @dice-rolled]))}
         "Roll dice." ]
        [:p @dice-rolled]])))
+
+(defn activated-effects []
+  (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
+
+    [:ul
+     (for [[die effects] @activated-effects]
+       (for [[k v] effects]
+         [:li
+          {:key k}
+          v]))]))
 
 (defn main-panel [effect-id]
   (let [ name (re-frame/subscribe [::subs/name])]
@@ -80,4 +90,5 @@
      [effects]
      [add]
      [dice-roll]
+     [activated-effects]
      ]))
