@@ -1,11 +1,12 @@
 (ns dice-roller.core)
 
-(use '[clojure.string :only (join)])
-
 (rf/reg-event-db
  :initialize
  (fn [_ _]
    {:effects {}})) 
+
+
+(use '[clojure.string :only (join)])
 
 (defn roll-dice
   "Rolls x dice with number of sides y."
