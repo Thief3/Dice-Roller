@@ -30,20 +30,25 @@
           [:div.die (get e :die)]
           [:div (delete-button (get e :die) (get e :key))]]))]))
 
-(defn atom-input [value type]
+(defn atom-input [value type id]
   [:input {:type type
            :value @value
+           :id id
            :on-change #(reset! value (-> % .-target .-value))}])
 
 (defn add []
   (let [effect (reagent/atom "") die (reagent/atom "")]
-    [:form.grid.sm:grid-cols-3.gap-4
+    [:div.grid.sm:grid-cols-3.gap-4
      [:div.grid.sm:grid-cols-2
-      [:label "Die: "]
-      [atom-input die "text"]]
+      [:label
+       {:for "input-die-for-effect"}
+       "Die: "]
+      [atom-input die "text" "input-die-for-effect"]]
      [:div.grid.sm:grid-cols-2
-      [:label "Effect: "]
-      [atom-input effect "text"]]
+      [:label
+       {:for "input-effect-to-add"}
+       "Effect: "]
+      [atom-input effect "text" "input-effect-to-add"]]
      [:button
       {:on-click #(do
                     (re-frame/dispatch [:add-effect @die @effect])
@@ -62,14 +67,18 @@
         num-of-rolls (reagent/atom 1)
         dice-rolled (reagent/atom ())
         activated-effects (re-frame/subscribe [::subs/activated-effects])]
-    [:div
-     [:form.grid.sm:grid-cols-3.gap-4
+    [:div.grid.grid-cols-1
+     [:div.grid.sm:grid-cols-3.gap-4
       [:div.grid.sm:grid-cols-2
-       [:label "Die: "]
-       [atom-input die "number"]]
+       [:label
+        {:for "input-die-to-roll"}
+        "Die: "]
+       [atom-input die "number" "input-die-to-roll"]]
       [:div.grid.sm:grid-cols-2
-       [:label "Number of rolls: "]
-       [atom-input num-of-rolls "number"]]
+       [:label
+        {:for "input-num-die-roll"}
+        "Number of rolls: "]
+       [atom-input num-of-rolls "number" "input-num-die-roll"]]
       [:button
        {:on-click
         #(do
@@ -78,7 +87,8 @@
                               (js/parseInt @die)))
            (re-frame/dispatch [:get-activated-effects @dice-rolled]))}
        "Roll dice." ]]
-     [:p @dice-rolled]]))
+     [:p @dice-rolled]
+     ]))
 
 (defn activated-effects []
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
