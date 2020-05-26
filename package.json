@@ -5,12 +5,14 @@
         "react-dom": "16.13.0"
     },
     "devDependencies": {
+        "onchange": "7.0.2",
         "shadow-cljs": "2.9.3",
         "tailwindcss": "1.4.6"
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "tw": "npx tailwind build tw/style.css -o resources/public/css/main1.css",
-        "watch:css": "onchange 'tw/*css' -- npm run tw"
+        "dev": "npm run dev && npm run watch:css",
+        "build:css": "npx tailwind build tw/style.css -o resources/public/css/main1.css",
+        "watch:css": "onchange \"tw/*.css\" -- npm run build:css"
     }
 }
