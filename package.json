@@ -1,10 +1,16 @@
 {
-	"name": "dice-roller",
-	"dependencies": {
-		"react": "16.13.0",
-		"react-dom": "16.13.0"
-	},
-	"devDependencies": {
-		"shadow-cljs": "2.9.3"
-	}
+    "name": "dice-roller",
+    "dependencies": {
+        "react": "16.13.0",
+        "react-dom": "16.13.0"
+    },
+    "devDependencies": {
+        "shadow-cljs": "2.9.3",
+        "tailwindcss": "1.4.6"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "tw": "npx tailwind build tw/style.css -o resources/public/css/main1.css",
+        "watch:css": "onchange 'tw/*css' -- npm run tw"
+    }
 }

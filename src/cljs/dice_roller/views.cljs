@@ -31,10 +31,11 @@
           [:div (delete-button (get e :die) (get e :key))]]))]))
 
 (defn atom-input [value type id]
-  [:input {:type type
-           :value @value
-           :id id
-           :on-change #(reset! value (-> % .-target .-value))}])
+  [:input.bg-white.focus:outline-none.focus:shadow-outline.border.border-gray-300.rounded-lg.py-2.px-4.block.w-full.appearance-none.leading-normal
+   {:type type
+    :value @value
+    :id id
+    :on-change #(reset! value (-> % .-target .-value))}])
 
 (defn add []
   (let [effect (reagent/atom "") die (reagent/atom "")]
@@ -49,7 +50,7 @@
        {:for "input-effect-to-add"}
        "Effect: "]
       [atom-input effect "text" "input-effect-to-add"]]
-     [:button
+     [:button.btn.btn-blue
       {:on-click #(do
                     (re-frame/dispatch [:add-effect @die @effect])
                     (reset! die "")
@@ -79,7 +80,7 @@
         {:for "input-num-die-roll"}
         "Number of rolls: "]
        [atom-input num-of-rolls "number" "input-num-die-roll"]]
-      [:button
+      [:button.btn.btn-blue
        {:on-click
         #(do
            (reset! dice-rolled

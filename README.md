@@ -35,7 +35,7 @@ you.
     - Dynamic SPA content rendered in the following `div`:
         ```html
         <div id="app"></div>
-        ```
+       ```
     - Customizable; add headers, footers, links to other scripts and styles, etc.
   - Generated directories and files
     - Created on build with either the [dev](#running-the-app) or [prod](#production) profile
