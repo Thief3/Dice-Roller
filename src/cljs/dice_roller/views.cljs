@@ -7,9 +7,9 @@
 
 (defn delete-button 
   [die item-id]
-  [:button
+  [:div.delete-button
    {:on-click #(re-frame/dispatch [:delete-effect die item-id])}
-   die " " item-id])
+   [:i.fas.fa-trash.fa-1x]])
 
 (defn effect-breakdown [effect-list]
   (for [[die vals] effect-list]
@@ -18,16 +18,17 @@
 
 (defn effects []
   (let [effects (re-frame/subscribe [::subs/effects])]
-    [:ul
+    [:div#effects
+     [:div#effects-header.grid.grid-col-2
+      [:h3.effect "Effect"]
+      [:h3.die "Die"]]
      (for [effect-list (effect-breakdown @effects)]
        (for [e effect-list]
-         [:li
+         [:div#single-effect.grid.grid-cols-3
           {:key (get e :key)}
-          (str
-           "Key: " (get e :key) ", "
-           "Die: " (get e :die) ", "
-           "Effect: " (get e :effect))
-          (delete-button (get e :die) (get e :key))]))]))
+          [:div.effect (get e :effect)]
+          [:div.die (get e :die)]
+          [:div (delete-button (get e :die) (get e :key))]]))]))
 
 (defn atom-input [value type]
   [:input {:type type
@@ -36,18 +37,19 @@
 
 (defn add []
   (let [effect (reagent/atom "") die (reagent/atom "")]
-    (fn [_]
-      [:div
-       [:label "Die: "]
-       [atom-input die "text"]
-       [:label "Effect: "]
-       [atom-input effect "text"]
-       [:button
-        {:on-click #(do
-                     (re-frame/dispatch [:add-effect @die @effect])
-                     (reset! die "")
-                     (reset! effect ""))}
-        "Add new!"]])))
+    [:form.grid.sm:grid-cols-3.gap-4
+     [:div.grid.sm:grid-cols-2
+      [:label "Die: "]
+      [atom-input die "text"]]
+     [:div.grid.sm:grid-cols-2
+      [:label "Effect: "]
+      [atom-input effect "text"]]
+     [:button
+      {:on-click #(do
+                    (re-frame/dispatch [:add-effect @die @effect])
+                    (reset! die "")
+                    (reset! effect ""))}
+      "Add new!"]]))
 
 
 (defn roll-dice
@@ -56,39 +58,44 @@
   (map inc (repeatedly x #(rand-int y))))
 
 (defn dice-roll []
-  (let [die (reagent/atom 6) num-of-rolls (reagent/atom 1) dice-rolled (reagent/atom ()) activated-effects (re-frame/subscribe [::subs/activated-effects])]
-    (fn [_]
-      [:div
+  (let [die (reagent/atom 6)
+        num-of-rolls (reagent/atom 1)
+        dice-rolled (reagent/atom ())
+        activated-effects (re-frame/subscribe [::subs/activated-effects])]
+    [:div
+     [:form.grid.sm:grid-cols-3.gap-4
+      [:div.grid.sm:grid-cols-2
        [:label "Die: "]
-       [atom-input die "number"]
+       [atom-input die "number"]]
+      [:div.grid.sm:grid-cols-2
        [:label "Number of rolls: "]
-       [atom-input num-of-rolls "number"]
-       [:button
-        {:on-click
-         #(do
-            (reset! dice-rolled
+       [atom-input num-of-rolls "number"]]
+      [:button
+       {:on-click
+        #(do
+           (reset! dice-rolled
                    (roll-dice (js/parseInt @num-of-rolls)
                               (js/parseInt @die)))
-            (re-frame/dispatch [:get-activated-effects @dice-rolled]))}
-        "Roll dice." ]
-       [:p @dice-rolled]])))
+           (re-frame/dispatch [:get-activated-effects @dice-rolled]))}
+       "Roll dice." ]]
+     [:p @dice-rolled]]))
 
 (defn activated-effects []
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
-
-    [:ul
+    [:div#activated-effects
      (for [[die effects] @activated-effects]
        (for [[k v] effects]
-         [:li
-          {:key k}
-          v]))]))
+         [:div v]))]))
 
 (defn main-panel [effect-id]
-  (let [ name (re-frame/subscribe [::subs/name])]
+  (let [a-e (re-frame/subscribe [::subs/activated-effects])]
     [:div
-     [:h1 "Hello from " @name]
+     ;; Hiccup complains about classes with a '/' so theres this now.
+     {:class "container mx-auto px-4 w-full md:w-1/2 lg:w-1/4"}
+     [:h1 "A foursouls idea."]
+     (if (not (empty? @a-e))
+         [activated-effects])
      [effects]
-     [add]
-     [dice-roll]
-     [activated-effects]
-     ]))
+     [:div
+      [add]
+      [dice-roll]]]))

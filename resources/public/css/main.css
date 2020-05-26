@@ -1,0 +1,43 @@
+/*
+#main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.box, #single-effect {
+  display: flex;
+  flex-direction: row;
+}
+
+.box {
+  padding-top: 32px;
+  padding-bottom: 16px;
+}
+
+#effects {
+  align-items: baseline;
+  text-align: center;
+}
+*/
+div.die {
+  text-align: right;
+}
+/*
+.effect {
+  width: 128px;
+  text-align: right;
+}
+
+#single-effect {
+  width: 60%;
+}
+*/
+
+div.delete-button{
+  font-size: 28px;
+}
+
+.fa-trash {
+  color: red;
+}
