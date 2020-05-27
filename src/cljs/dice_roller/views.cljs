@@ -39,23 +39,25 @@
 
 (defn add []
   (let [effect (reagent/atom "") die (reagent/atom "")]
-    [:div.grid.sm:grid-cols-3.gap-4
-     [:div.grid.sm:grid-cols-2
-      [:label
-       {:for "input-die-for-effect"}
-       "Die: "]
-      [atom-input die "text" "input-die-for-effect"]]
-     [:div.grid.sm:grid-cols-2
-      [:label
-       {:for "input-effect-to-add"}
-       "Effect: "]
-      [atom-input effect "text" "input-effect-to-add"]]
-     [:button.btn.btn-blue
-      {:on-click #(do
-                    (re-frame/dispatch [:add-effect @die @effect])
-                    (reset! die "")
-                    (reset! effect ""))}
-      "Add new!"]]))
+    [:div.grid
+     [:h2 "What effects would you like to add to the list?"]
+     [:div.grid.sm:grid-cols-3.gap-4
+      [:div.grid.sm:grid-cols-2
+       [:label
+        {:for "input-die-for-effect"}
+        "Die: "]
+       [atom-input die "text" "input-die-for-effect"]]
+      [:div.grid.sm:grid-cols-2
+       [:label
+        {:for "input-effect-to-add"}
+        "Effect: "]
+       [atom-input effect "text" "input-effect-to-add"]]
+      [:button.btn.btn-blue
+       {:on-click #(do
+                     (re-frame/dispatch [:add-effect @die @effect])
+                     (reset! die "")
+                     (reset! effect ""))}
+       "Add new!"]]]))
 
 
 (defn roll-dice
@@ -69,6 +71,7 @@
         dice-rolled (reagent/atom ())
         activated-effects (re-frame/subscribe [::subs/activated-effects])]
     [:div.grid.grid-cols-1
+     [:h2 "What dice combination do you want to roll?"]
      [:div.grid.sm:grid-cols-3.gap-4
       [:div.grid.sm:grid-cols-2
        [:label
