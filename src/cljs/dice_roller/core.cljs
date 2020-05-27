@@ -23,16 +23,3 @@
   (re-frame/dispatch-sync [::events/initialize-db])
   (dev-setup)
   (mount-root))
-
-(defn roll-dice
-  "Rolls x dice with number of sides y."
-  [x y]
-  (map inc (repeatedly x #(rand-int y))))
-
-(defn effects-activated
-  "Checks a hashmap of hashmaps x for values in list y, displaying any other values in their hashmap."
-  [x y]
-  (flatten
-   (map
-    #(vals %) (vals
-               (get-in x y)))))

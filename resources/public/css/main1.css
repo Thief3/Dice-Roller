@@ -625,8 +625,8 @@ video {
   background-color: rgba(255, 255, 255, var(--bg-opacity));
   border-width: 1px;
   --border-opacity: 1;
-  border-color: #9ae6b4;
-  border-color: rgba(154, 230, 180, var(--border-opacity));
+  border-color: #e2e8f0;
+  border-color: rgba(226, 232, 240, var(--border-opacity));
   border-radius: 0.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
