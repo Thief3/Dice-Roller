@@ -5,19 +5,16 @@
    [reagent.core :as reagent]
    ))
 
-(defn delete-button 
-  [die item-id]
+(defn delete-button
+  "Button that deletes the effect at item-id in db:effects."
+  [item-id]
   [:div.delete-button
-   {:on-click #(re-frame/dispatch [:delete-effect die item-id])}
+   {:on-click #(re-frame/dispatch [:delete-effect item-id])}
    [:i.fas.fa-trash.fa-1x]])
 
-(defn effect-breakdown [effect-list]
-  "Takes the effect-list and returns a list of maps."
-  (for [[die vals] effect-list]
-    (for [[key effect] vals]
-      {:key key :die die :effect effect})))
-
-(defn effects []
+(defn effects
+  "Displays a list of effects from db:effects, with a button for deleting each one."
+  []
   (let [effects (re-frame/subscribe [::subs/effects])]
     [:div#effects
      [:div#effects-header.grid.grid-col-2
@@ -28,16 +25,20 @@
           {:key (get e :key)}
           [:div.effect (get e :effect)]
           [:div.die (get e :die)]
-          [:div (delete-button (get e :die) (get e :key))]])]))
+          [:div (delete-button (get e :key))]])]))
 
-(defn atom-input [value type id]
-  [:input.bg-white.focus:outline-none.focus:shadow-outline.border.border-gray-300.rounded-lg.py-2.px-4.block.w-full.appearance-none.leading-normal
+(defn atom-input
+  "Input with type type, and a reference value of value."
+  [value type id]
+  [:input.input-basic.focus:outline-none.focus:shadow-outline
    {:type type
     :value @value
     :id id
     :on-change #(reset! value (-> % .-target .-value))}])
 
-(defn add []
+(defn add
+  "View to add a new effect x on die roll y to db:effects, using a form."
+  []
   (let [effect (reagent/atom "") die (reagent/atom "")]
     [:div.grid
      [:h2 "What effects would you like to add to the list?"]
@@ -65,7 +66,10 @@
   [x y]
   (map inc (repeatedly x #(rand-int y))))
 
-(defn dice-roll []
+(defn dice-roll
+  "View to roll x dice of y sides, handled using a form. On dice roll, sets the
+  new activated-effects in db:activated-effects."
+  []
   (let [die (reagent/atom 6)
         num-of-rolls (reagent/atom 1)
         dice-rolled (reagent/atom ())
@@ -94,7 +98,9 @@
      [:p @dice-rolled]
      ]))
 
-(defn activated-effects []
+(defn activated-effects
+  "A view to display all the activated-effects in db:activated-effects."
+  []
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
     (js/console.log @activated-effects)
     [:div#activated-effects
@@ -103,7 +109,11 @@
         {:key (str "ae-" (get effect :key))}
         (get effect :effect)])]))
 
-(defn main-panel [effect-id]
+(defn main-panel
+  "The main panel for the page, which includes the components for activated
+  effects, added effects, and the forms for adding new effects and rolling
+  dice."
+  []
   (let [a-e (re-frame/subscribe [::subs/activated-effects])]
     [:div
      ;; Hiccup complains about classes with a '/' so theres this now.

@@ -619,11 +619,25 @@ video {
   }
 }
 
-.input-box {
-  margin: 0.5rem;
-  padding: 0.25rem;
-  border-width: 2px;
-  width: 33.333333%
+.input-basic {
+  --bg-opacity: 1;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, var(--bg-opacity));
+  border-width: 1px;
+  --border-opacity: 1;
+  border-color: #9ae6b4;
+  border-color: rgba(154, 230, 180, var(--border-opacity));
+  border-radius: 0.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: block;
+  width: 100%;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  line-height: 1.5;
 }
 
 .btn {
