@@ -3,7 +3,7 @@
    [re-frame.core :as re-frame]
    [dice-roller.subs :as subs]
    [reagent.core :as reagent]
-   ))
+   [clojure.spec.alpha :as s]))
 
 (defn delete-button
   "Button that deletes the effect at item-id in db:effects."
@@ -22,10 +22,10 @@
       [:h3.die "Die"]]
      (for [e @effects]
          [:div#single-effect.grid.grid-cols-3
-          {:key (get e :key)}
-          [:div.effect (get e :effect)]
-          [:div.die (get e :die)]
-          [:div (delete-button (get e :key))]])]))
+          {:key (:key e)}
+          [:div.effect (:effect e)]
+          [:div.die (:die e)]
+          [:div (delete-button (:key e))]])]))
 
 (defn atom-input
   "Input with type type, and a reference value of value."
@@ -39,7 +39,7 @@
 (defn add
   "View to add a new effect x on die roll y to db:effects, using a form."
   []
-  (let [effect (reagent/atom "") die (reagent/atom "")]
+  (let [effect (reagent/atom "") die (reagent/atom 1)]
     [:div.grid
      [:h2 "What effects would you like to add to the list?"]
      [:div.grid.sm:grid-cols-3.gap-4
@@ -47,7 +47,7 @@
        [:label
         {:for "input-die-for-effect"}
         "Die: "]
-       [atom-input die "text" "input-die-for-effect"]]
+       [atom-input die "number" "input-die-for-effect"]]
       [:div.grid.sm:grid-cols-2
        [:label
         {:for "input-effect-to-add"}
@@ -106,8 +106,8 @@
     [:div#activated-effects
      (for [effect @activated-effects]
        [:div
-        {:key (str "ae-" (get effect :key))}
-        (get effect :effect)])]))
+        {:key (str "ae-" (:key effect))}
+        (:effect effect)])]))
 
 (defn main-panel
   "The main panel for the page, which includes the components for activated
