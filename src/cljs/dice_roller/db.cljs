@@ -8,6 +8,7 @@
    :effects (list
              (Effect. 1 (str (gensym 1)) "Kill guppy.")
              (Effect. 1 (str (gensym 2)) "Pick up a penny."))
-   :activated-effects ()})
+   :activated-effects ()
+   :last-rolled-dice ()})
 
 ;;(s/def :dice-roller.db/default-db/name string?)

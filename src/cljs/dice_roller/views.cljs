@@ -93,7 +93,8 @@
            (reset! dice-rolled
                    (roll-dice (js/parseInt @num-of-rolls)
                               (js/parseInt @die)))
-           (re-frame/dispatch [:get-activated-effects @dice-rolled]))}
+           (re-frame/dispatch [:get-activated-effects @dice-rolled])
+           (re-frame/dispatch [:last-dice-rolled @dice-rolled]))}
        "Roll dice." ]]
      [:p @dice-rolled]
      ]))
@@ -102,25 +103,53 @@
   "A view to display all the activated-effects in db:activated-effects."
   []
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
-    (js/console.log @activated-effects)
-    [:div#activated-effects
-     (for [effect @activated-effects]
-       [:div
-        {:key (str "ae-" (:key effect))}
-        (:effect effect)])]))
+    (if (not (empty? @activated-effects))
+      [:div#activated-effects
+       (for [effect @activated-effects]
+         [:div
+          {:key (str "ae-" (:key effect))}
+          (:effect effect)])])))
+
+(defn dice-rolled-panel
+  "Displays the last dice-frequence rolled and total."
+  []
+  (let [last-dice-rolled (re-frame/subscribe [::subs/last-dice-rolled])]
+    (if (not (empty? @last-dice-rolled))
+      [:div
+       ;[:p "You rolled, "]
+       [:table.table-auto
+        [:thead
+         [:tr
+          [:th.px-4.py-2 "Die"]
+          [:th.px-4.py-2 "Frequency"]
+          [:th.px-4.py-2 "Total"]]]
+        [:tbody
+        (for [[die freq] (frequencies @last-dice-rolled)]
+          ((fn [die freq]
+            (do
+              (js/console.log "Test")
+              [:tr
+               [:td.border.px-4.py-2 (str freq)]
+               [:td.border.px-4.py-2 (str die)]
+               [:td.border.px-4.py-2 (str (* freq die))]]))
+            die freq))]]
+       [:p "The total is: " (reduce + @last-dice-rolled)]])))
 
 (defn main-panel
   "The main panel for the page, which includes the components for activated
   effects, added effects, and the forms for adding new effects and rolling
   dice."
   []
-  (let [a-e (re-frame/subscribe [::subs/activated-effects])]
+  (let [];a-e (re-frame/subscribe [::subs/activated-effects])
+        ;d-r (re-frame/subscribe [::subs/last-dice-rolled])]
     [:div
      ;; Hiccup complains about classes with a '/' so theres this now.
      {:class "container mx-auto px-4 w-full md:w-1/2 lg:w-1/4"}
      [:h1 "A foursouls idea."]
-     (if (not (empty? @a-e))
-         [activated-effects])
+;     (if (not (empty? @d-r))
+       [dice-rolled-panel];)
+ ;    (if (not (empty? @a-e))
+       [activated-effects];)
      [effects]
      [:div
       [add]

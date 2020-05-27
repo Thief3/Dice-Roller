@@ -16,3 +16,8 @@
  ::activated-effects
  (fn [db]
    (:activated-effects db)))
+
+(reg-sub
+ ::last-dice-rolled
+ (fn [db]
+   (:last-dice-rolled db)))

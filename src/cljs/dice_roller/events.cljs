@@ -28,7 +28,6 @@
  :add-effect
  ;[validate-interceptor]
  (fn [db [_ die effect]]
-   (js/console.log db)
    (update-in db [:effects] concat (list (db/Effect. die (str (gensym)) effect)))))
 
 (re-frame/reg-event-db
@@ -57,3 +56,12 @@
                   (list (for [die dice-rolled]
                             (if (= (:die effect) die)
                               effect))))))))))))
+
+(re-frame/reg-event-db
+ :last-dice-rolled
+ ;;[validate-interceptor]
+ (fn [db [_ dice-rolled]]
+   (assoc-in
+    db
+    [:last-dice-rolled]
+    dice-rolled)))
