@@ -12,6 +12,7 @@
    [:i.fas.fa-trash.fa-1x]])
 
 (defn effect-breakdown [effect-list]
+  "Takes the effect-list and returns a list of maps."
   (for [[die vals] effect-list]
     (for [[key effect] vals]
       {:key key :die die :effect effect})))
@@ -22,13 +23,12 @@
      [:div#effects-header.grid.grid-col-2
       [:h3.effect "Effect"]
       [:h3.die "Die"]]
-     (for [effect-list (effect-breakdown @effects)]
-       (for [e effect-list]
+     (for [e @effects]
          [:div#single-effect.grid.grid-cols-3
           {:key (get e :key)}
           [:div.effect (get e :effect)]
           [:div.die (get e :die)]
-          [:div (delete-button (get e :die) (get e :key))]]))]))
+          [:div (delete-button (get e :die) (get e :key))]])]))
 
 (defn atom-input [value type id]
   [:input.bg-white.focus:outline-none.focus:shadow-outline.border.border-gray-300.rounded-lg.py-2.px-4.block.w-full.appearance-none.leading-normal
@@ -96,10 +96,12 @@
 
 (defn activated-effects []
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
+    (js/console.log @activated-effects)
     [:div#activated-effects
-     (for [[die effects] @activated-effects]
-       (for [[k v] effects]
-         [:div v]))]))
+     (for [effect @activated-effects]
+       [:div
+        {:key (str "ae-" (get effect :key))}
+        (get effect :effect)])]))
 
 (defn main-panel [effect-id]
   (let [a-e (re-frame/subscribe [::subs/activated-effects])]

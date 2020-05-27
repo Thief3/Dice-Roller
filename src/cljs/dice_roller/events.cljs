@@ -17,10 +17,10 @@
 (rf/reg-event-db
  :add-effect
  (fn [db [_ die effect]]
-   (js/console.log die)
-   (if (not (contains? db die))
-     (assoc-in db [:effects die] nil))
-   (assoc-in db [:effects die (str (gensym))] effect)))
+   (update-in db [:effects]
+              concat (list {:die die
+                            :key (str (gensym))
+                            :effect effect}))))
 
 (rf/reg-event-db
  :change-effect
@@ -30,13 +30,23 @@
 (rf/reg-event-db
   :delete-effect
   (fn [db [_ die id]]
-    (update-in
+    (assoc-in
      db
-     [:effects die]
-     dissoc
-     (str id))))
+     [:effects]
+     (filter #(not (= (get % :key) (str id))) (get db :effects)))))
 
 (rf/reg-event-db
  :get-activated-effects
  (fn [db [_ dice-rolled]]
-   (assoc-in db [:activated-effects] (select-keys (get db :effects) (vec dice-rolled)))))
+   (assoc-in
+    db
+    [:activated-effects]
+    (distinct
+     (flatten
+      (remove nil?
+              (flatten
+               (list
+                (for [effect (get db :effects)]
+                  (list (for [die dice-rolled]
+                          (if (= (get effect :die) die)
+                            effect))))))))))))

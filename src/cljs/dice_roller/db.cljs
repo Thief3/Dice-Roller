@@ -2,7 +2,9 @@
 
 (def default-db
   {:name "re-frame"
-   :effects {1 {(str (gensym 1)) "Kill guppy." (str (gensym 2)) "Kill Issac."}
-             2 {(str (gensym 3)) "Cry"}
-             3 {(str (gensym 4)) "Wooop Woop."}}
+   :effects (list
+             {:die 1 :key (str (gensym 1)) :effect "Kill guppy."}
+             {:die 1 :key (str (gensym 2)) :effect "Kill Issac."}
+             {:die 2 :key (str (gensym 3)) :effect "Cry"}
+             {:die 3 :key (str (gensym 4)) :effect "Wooop Woop."})
    :activated-effects ()})
