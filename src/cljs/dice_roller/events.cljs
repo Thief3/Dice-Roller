@@ -33,8 +33,7 @@
 (re-frame/reg-event-db
  :delete-effect
  ;[validate-interceptor]
- (fn [db [_ die id]]
-   
+ (fn [db [_ id]]
    (assoc-in
     db
     [:effects]

@@ -17,15 +17,15 @@
   []
   (let [effects (re-frame/subscribe [::subs/effects])]
     [:div#effects
-     [:div#effects-header.grid.grid-col-2
+     [:div#effects-header.grid.grid-cols-2.gap-4
       [:h3.effect "Effect"]
       [:h3.die "Die"]]
      (for [e @effects]
-         [:div#single-effect.grid.grid-cols-3
+         [:div#single-effect.grid.grid-cols-2.gap-4
           {:key (:key e)}
           [:div.effect (:effect e)]
-          [:div.die (:die e)]
-          [:div (delete-button (:key e))]])]))
+          [:div.die (:die e)
+           (delete-button (:key e))]])]))
 
 (defn atom-input
   "Input with type type, and a reference value of value."
@@ -115,24 +115,21 @@
   []
   (let [last-dice-rolled (re-frame/subscribe [::subs/last-dice-rolled])]
     (if (not (empty? @last-dice-rolled))
-      [:div
-       ;[:p "You rolled, "]
-       [:table.table-auto
-        [:thead
-         [:tr
-          [:th.px-4.py-2 "Die"]
-          [:th.px-4.py-2 "Frequency"]
-          [:th.px-4.py-2 "Total"]]]
-        [:tbody
+      [:div.grid
+       [:div "Last roll."]
+       [:div.grid.grid-cols-3
+        [:div.px-4.py-2 "Die"]
+        [:div.px-4.py-2 "Frequency"]
+        [:div.px-4.py-2 "Total"]]
+        [:div
         (for [[die freq] (frequencies @last-dice-rolled)]
           ((fn [die freq]
             (do
-              (js/console.log "Test")
-              [:tr
-               [:td.border.px-4.py-2 (str freq)]
-               [:td.border.px-4.py-2 (str die)]
-               [:td.border.px-4.py-2 (str (* freq die))]]))
-            die freq))]]
+              [:div.grid.grid-cols-3
+               [:div.border.px-4.py-2 (str freq)]
+               [:div.border.px-4.py-2 (str die)]
+               [:div.border.px-4.py-2 (str (* freq die))]]))
+            die freq))]
        [:p "The total is: " (reduce + @last-dice-rolled)]])))
 
 (defn main-panel
@@ -140,16 +137,13 @@
   effects, added effects, and the forms for adding new effects and rolling
   dice."
   []
-  (let [];a-e (re-frame/subscribe [::subs/activated-effects])
-        ;d-r (re-frame/subscribe [::subs/last-dice-rolled])]
-    [:div
+  (let []
+    [:div.grid
      ;; Hiccup complains about classes with a '/' so theres this now.
-     {:class "container mx-auto px-4 w-full md:w-1/2 lg:w-1/4"}
+     {:class "container mx-auto px-4 w-full md:w-1/2 lg:w-1/3"}
      [:h1 "A foursouls idea."]
-;     (if (not (empty? @d-r))
-       [dice-rolled-panel];)
- ;    (if (not (empty? @a-e))
-       [activated-effects];)
+     [dice-rolled-panel]
+     [activated-effects]
      [effects]
      [:div
       [add]
