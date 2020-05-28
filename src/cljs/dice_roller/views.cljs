@@ -138,19 +138,20 @@
   dice."
   []
   (let []
-    [:div.grid
+    [:div
+     [:div.grid
      ;; Hiccup complains about classes with a '/' so theres this now.
-     {:class "section space-y-20 container mx-auto px-4 w-full md:w-1/2 lg:w-1/2"
-      :id "main"}
-     [:h1.pt-8 "Ability Tracking"]
-     [dice-rolled-panel]
-     [activated-effects]
-     [effects]
-     [add]
-     [dice-roll]
+      {:class "section space-y-20 container mx-auto px-4 w-full md:w-1/2 lg:w-1/2"
+       :id "main"}
+      [:h1.pt-8 "Ability Tracking"]
+      [dice-rolled-panel]
+      [activated-effects]
+      [effects]
+      [add]
+      [dice-roll]]
      [:footer
+      {:class "section container mx-auto px-4 py-4 my-8 w-full md:w-1/2"}
       [:h4 "About"]
       [:p "A simple app developed to learn clojurescript and re-frame for use alongside the Four Souls board game, because me and my friends keep forgetting what effects are active."]
       [:p.py-2 "kissarlim@gmail.com"]
-      [:p "© 2020, Malik Kissarli, No Rights Reserved."]]
-     [:div.pb-12]]))
+      [:p "© 2020, Malik Kissarli, No Rights Reserved."]]]))

@@ -21,4 +21,25 @@
 
 }
 
+h1, h2, h3 {
+  font-size: 1.3rem;
+  font-style: bold;
+  text-align: center;
+}
+
+h4 {
+  font-size: 1.1rem;
+  font-style: bold;
+}
+
+body {
+  background-color: #e79b9b;
+  /*color: #801a1a;*/
+}
+
+footer {
+  background-color: #801a1a;
+  color: #000000; 
+}
+
 @tailwind utilities;
