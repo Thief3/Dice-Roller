@@ -17,4 +17,8 @@
   @apply bg-blue-700;
 }
 
+#main {
+
+}
+
 @tailwind utilities;

@@ -116,11 +116,11 @@
   (let [last-dice-rolled (re-frame/subscribe [::subs/last-dice-rolled])]
     (if (not (empty? @last-dice-rolled))
       [:div.grid
-       [:div "Last roll."]
+       [:h2 "Last roll."]
        [:div.grid.grid-cols-3
-        [:div.px-4.py-2 "Die"]
-        [:div.px-4.py-2 "Frequency"]
-        [:div.px-4.py-2 "Total"]]
+        [:h3.px-4.py-2 "Die"]
+        [:h3.px-4.py-2 "Frequency"]
+        [:h3.px-4.py-2 "Total"]]
         [:div
         (for [[die freq] (frequencies @last-dice-rolled)]
           ((fn [die freq]
@@ -140,11 +140,17 @@
   (let []
     [:div.grid
      ;; Hiccup complains about classes with a '/' so theres this now.
-     {:class "container mx-auto px-4 w-full md:w-1/2 lg:w-1/3"}
-     [:h1 "A foursouls idea."]
+     {:class "section space-y-20 container mx-auto px-4 w-full md:w-1/2 lg:w-1/2"
+      :id "main"}
+     [:h1.pt-8 "Ability Tracking"]
      [dice-rolled-panel]
      [activated-effects]
      [effects]
-     [:div
-      [add]
-      [dice-roll]]]))
+     [add]
+     [dice-roll]
+     [:footer
+      [:h4 "About"]
+      [:p "A simple app developed to learn clojurescript and re-frame for use alongside the Four Souls board game, because me and my friends keep forgetting what effects are active."]
+      [:p.py-2 "kissarlim@gmail.com"]
+      [:p "© 2020, Malik Kissarli, No Rights Reserved."]]
+     [:div.pb-12]]))
