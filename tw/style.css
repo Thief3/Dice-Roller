@@ -42,4 +42,17 @@ footer {
   color: #000000; 
 }
 
+div.die  {
+  text-align: right;
+}
+
+div.delete-button{
+  font-size: 28px;
+}
+
+.fa-trash {
+  color: red;
+}
+
+
 @tailwind utilities;

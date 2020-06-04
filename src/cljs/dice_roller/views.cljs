@@ -8,7 +8,7 @@
 (defn delete-button
   "Button that deletes the effect at item-id in db:effects."
   [item-id]
-  [:div.delete-button
+  [:span.delete-button.align-middle.inline-block
    {:on-click #(re-frame/dispatch [:delete-effect item-id])}
    [:i.fas.fa-trash.fa-1x]])
 
@@ -23,9 +23,12 @@
      (for [e @effects]
          [:div#single-effect.grid.grid-cols-2.gap-4
           {:key (:key e)}
-          [:div.effect (:effect e)]
-          [:div.die (:die e)
-           (delete-button (:key e))]])]))
+          [:span.effect (:effect e)]
+          [:div.die.grid.grid-cols-2.align-middle
+            [:span.align-middle.inline-block
+             (:die e)]
+            [:span.align-middle.inline-block
+             (delete-button (:key e))] ]])]))
 
 (defn atom-input
   "Input with type type, and a reference value of value."
