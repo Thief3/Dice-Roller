@@ -108,6 +108,7 @@
   (let [activated-effects (re-frame/subscribe [::subs/activated-effects])]
     (if (not (empty? @activated-effects))
       [:div#activated-effects
+       [:h2 "Activated Effects"]
        (for [effect @activated-effects]
          [:div
           {:key (str "ae-" (:key effect))}
