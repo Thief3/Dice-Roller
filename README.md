@@ -4,7 +4,7 @@ A [re-frame](https://github.com/day8/re-frame) (Clojurescript) application
 designed as a client-side app, for keeping track of dice rolls and effects in
 boardgames (specifically designed for Binding of Issac Four Souls.)
 
-[Demo of the app.](readme_resources/demo.gif)
+![Demo of the app.](readme_resources/demo.gif)
 
 ## Environment Setup
 
